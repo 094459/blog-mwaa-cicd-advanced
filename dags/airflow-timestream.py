@@ -9,6 +9,11 @@ from airflow.operators.python import PythonOperator
 import awswrangler as wr
 
 
+#replace this with airflow date values so they remain tied to when the dag is run/scheduled
+todays_date = datetime.now()
+s3folder = todays_date.strftime("%Y%m%d%H%M")
+print (s3folder)
+
 default_args = {
     "owner": "airflow",
     "depends_on_past": False,
@@ -35,8 +40,8 @@ WHERE measure_name = 'cpu_system'
 GROUP BY region, instance_name, availability_zone, BIN(time, 24h)
 ORDER BY binned_timestamp ASC
 """),
-    path='s3://demo-airflow-ts-output/wr/my_file.csv',
-)
+    path='s3://demo-airflow-ts-output/{s3folder}/my_file.csv',
+).format(s3folder=s3folder)
 
 with DAG(
         dag_id=os.path.basename(__file__).replace(".py", ""),
