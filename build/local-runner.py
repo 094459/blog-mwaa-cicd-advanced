@@ -13,7 +13,8 @@ returns non-zero exit code if the test fails
 """
 def testWorkflow():
     mwaa_image=account+".dkr.ecr."+region+".amazonaws.com/mymwaa:2.0.2"
-    mwaa_db_image="docker.io/postgres:10-alpine"
+    mwaa_db_image=account+".dkr.ecr."+region+".amazonaws.com/mwaa-db:10-alpine"
+    #mwaa_db_image="docker.io/postgres:10-alpine"
     mwaa = None
     postgres = None
     try:
